@@ -1,36 +1,33 @@
-name: Build APK
+
+name: Build Android APK
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - master
   workflow_dispatch:
-  
-permissions:
-  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Java 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
-      - name: Install Android SDK
-        uses: android-actions/setup-android@v3
 
       - name: Build debug APK
         run: |
           chmod +x gradlew
           ./gradlew :doom:assembleDebug
 
-      - name: Check APK output
+      - name: Find APK
         run: |
           find doom/build/outputs/apk -type f -name "*.apk" -print
 
@@ -40,10 +37,4 @@ jobs:
           name: Doom-Android-APK
           path: doom/build/outputs/apk/debug/*.apk
           if-no-files-found: error
-          
-      - name: Save APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Doom-Android-APK
-          path: doom/build/outputs/apk/debug/*.apk
           
