@@ -37,6 +37,19 @@ jobs:
         name: Modernized UZDoom Mobile Port
         draft: false
         prerelease: false
-        files: "**/build/outputs/apk/**/*.apk"
-        
-        
+        files: "**/build/o0utputs/apk/**/*.apk"
+
+
+
+     
+    - name: Find generated APK
+      run: |
+        find doom -type f -name "*.apk" -print
+
+    - name: Save APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: Doom-Android-APK
+        path: doom/build/outputs/apk/debug/*.apk
+        if-no-files-found: error
+          
