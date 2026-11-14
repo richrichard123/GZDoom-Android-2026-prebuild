@@ -29,6 +29,17 @@ jobs:
           chmod +x gradlew
           ./gradlew :doom:assembleDebug
 
+      - name: Check APK output
+        run: |
+          find doom/build/outputs/apk -type f -name "*.apk" -print
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Doom-Android-APK
+          path: doom/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          
       - name: Save APK
         uses: actions/upload-artifact@v4
         with:
